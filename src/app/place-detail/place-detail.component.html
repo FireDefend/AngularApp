@@ -1,0 +1,226 @@
+<div [@flyInOut]="state">
+    <h1 class="text-center">{{this.searchService.placeDetail.result.name}}</h1>
+    <div class='container clearfix' >
+    <button type="button" class="btn btn-outline-secondary float-left" (click)="goBackList()" style="margin-left: 20px;margin-bottom: 20px" >
+        <img src="https://useiconic.com/open-iconic/svg/chevron-left.svg" width="14">List
+    </button>
+
+    
+
+    <button type="button" class="btn btn-outline-secondary float-right" style="margin-right: 20px;margin-bottom: 20px;float: right" >
+        <a [href]="twitter()" 
+        target="_blank" ><img id="detail-icon-img" src="https://cdn1.iconfinder.com/data/icons/logotypes/32/square-twitter-24.png" style="width: auto" width="24" height="24"></a>
+    </button>
+    <button type="button" class="btn btn-outline-secondary float-right" style="margin-right: 20px;margin-bottom: 10px;float: right" >
+        <a (click)="putInLocalOrDelete()">
+        <div  class="fa-star" [class.fas]="!ifInLocalStorage()" [class.far]="ifInLocalStorage()" > </div>
+        </a>
+    </button>
+    </div>
+    <div class='container'>
+<div class="card text-center" style="border: 0px;">
+      <div class="card-header" style="background-color: rgba(0,0,0,0);">
+        <ul class="nav nav-tabs card-header-tabs justify-content-end" >
+          <li class="nav-item">
+            <a class="nav-link " [class.active]="controller === 1" (click)="changeState(1)" >Info</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link"  [class.active]="controller === 2" (click)="changeState(2)" >Photos</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" [class.active]="controller === 3" (click)="changeState(3)" >Map</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" [class.active]="controller === 4" (click)="changeState(4)" >Reviews</a>
+        </li>
+    </ul>
+    </div>
+<div class="card-body" [hidden]="!(controller==1)">
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Open hours</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+      <div class="modal-body modal-no-line" >
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item" style="font-weight:bold"><div class="w-25" >{{isWeekayAvailible? this.getCurWeekday():" "}}</div><div class="w-50" >{{isWeekayAvailible? this.getCurOpenHours():" "}}</div></li>
+            <li class="list-group-item" *ngFor="let weekday of hoursAfterDele"><div class="w-25" >{{isWeekayAvailible? getWeekday(weekday):" "}}</div><div class="w-50" >{{isWeekayAvailible? getOpenHours(weekday):" "}}</div></li>
+
+        </ul>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    </div>
+</div>
+</div>
+</div>
+
+
+<ul class="list-group" >
+  <li class="list-group-item list-group-item-dark">
+    <div class="w-25" style="font-weight:bold">Address</div>
+    <div class="w-50" >{{this.searchService.placeDetail.result.formatted_address}}</div>
+</li>
+<li class="list-group-item">
+    <div class="w-25 " style="font-weight:bold">Phone Number</div> 
+    <div class="w-50" >{{this.searchService.placeDetail.result.formatted_phone_number}}</div></li>
+    <li class="list-group-item list-group-item-dark" [hidden]="!this.searchService.placeDetail.result.hasOwnProperty('price_level')">
+        <div class="w-25 " style="font-weight:bold">Price Level</div>
+        <div class="w-50" >{{this.getPriceLevel()}}</div>
+    </li>
+    <li class="list-group-item" [hidden]="!this.searchService.placeDetail.result.hasOwnProperty('rating')">
+        <div class="w-25 " style="font-weight:bold">Rating</div>
+        <div>{{this.searchService.placeDetail.result.rating}}</div>
+
+        <div class="w-50" >             
+            <div class="stars-outer">
+                <div class="stars-inner" [style.width.%]="this.searchService.placeDetail.result.rating*20" ></div>
+            </div>
+        </div></li>
+        <li class="list-group-item list-group-item-dark">
+            <div class="w-25 " style="font-weight:bold">Google Page</div>
+            <div class="w-50" >
+                <a [href]="this.searchService.placeDetail.result.url" target="_blank">
+                {{this.searchService.placeDetail.result.url}}</a></div></li>
+                <li class="list-group-item">
+                    <div class="w-25 " style="font-weight:bold">Website</div>
+                    <div class="w-50" >
+                        <a [href]="this.searchService.placeDetail.result.website" target="_blank">
+                        {{this.searchService.placeDetail.result.website}}</a></div></li>
+                        <li class="list-group-item list-group-item-dark" [hidden]="!this.searchService.placeHours">
+                            <div class="w-25 " style="font-weight:bold">Hours</div>
+                            <div class="w-50" >
+                                <div style="padding-right: 12px" >
+                                    {{isWeekayAvailible? (this.searchService.placeDetail.result.opening_hours.open_now? 
+                                        "Open now:"+this.getCurOpenHours():"Closed"):" "}}
+                                    </div><a  style="" data-toggle="modal" data-target="#exampleModalCenter">
+                                    Daily open hours</a></div></li>
+                                </ul>
+                            </div>
+                  <div class="card-body" [hidden]="!(controller==2)">
+                                <div class="alert alert-warning" role="alert" [hidden]="photosReady">
+                                 No photo records!
+                             </div>
+                             <div class="card-columns">
+
+                              <div class="card" *ngFor="let result of this.searchService.placeDetail.result.photos; index as i" [attr.data-index]="i" >
+                                  <a  href='{{photosReady? photosUrl[i]:""}}' target='view_window'><img class="card-img-top"  alt="Card image" src='{{photosReady? photosUrl[i]:""}}' ></a>
+                              </div>
+
+                          </div>
+
+                      </div>
+    <div #mapDiv class="card-body" [hidden]="!(controller==3)">
+
+    <div class="container">
+      <div class="row">
+        <div class="col-sm">
+          <div style="text-align:left;">From</div>
+          <input #searchFromPlace type="text" [(ngModel)]="fromInput" class="form-control" placeholder="Your Location" aria-label="Recipient's username" aria-describedby="basic-addon2">
+        </div>
+        <div class="col-sm">
+          <div style="text-align:left;">To</div>
+          <input type="text" class="form-control" [(ngModel)]="this.searchService.placeDetail.result.formatted_address" 
+                  aria-label="Recipient's username" aria-describedby="basic-addon2" disabled="true">
+        </div>
+        <div class="col-sm">
+          
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <div style="text-align:left;">Travel Mode</div>
+    <select [(ngModel)]="selectedMode" class="form-control" id="exampleFormControlSelect1">
+      <option value="DRIVING">Driving</option>
+      <option value="WALKING">Walking</option>
+      <option value="BICYCLING">Bicycling</option>
+      <option value="TRANSIT">Transit</option>
+    </select>
+
+    </div>
+    <div class="col">
+      <div style="text-align:left;opacity: 0;">123</div>
+      <button type="button" class="btn btn-primary" (click)="calculateRoute()" >Get Directions</button>
+    </div>
+  </div>
+</div>
+
+        </div>
+      </div>
+    </div>
+<div style="text-align:left;">
+<button type="button" class="btn btn-outline-secondary" (click)="streetView()" style="margin-left: 10px;margin-bottom: 20px;margin-top: 20px" >
+    <img src="http://cs-server.usc.edu:45678/hw/hw8/images/Pegman.png" style="width:30px">
+</button>
+</div>
+
+                         <agm-map #myAgmMap [latitude]="lat" [longitude]="lng" [zoom]="15">
+                          <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+                      </agm-map>
+                      <div id="directionsPanel" style="float:right;text-align:left;width:100%;height 100%"></div>
+    </div>
+                  <div class="card-body" [hidden]="!(controller==4)" >
+                    
+                        <div class="container clearfix" >
+                        <div class="dropdown" class="float-left" style="margin-right: 10px">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {{reviewsCompany}}
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" (click)="changeReviewaompany(0)" >Google Reviews</a>
+                                <a class="dropdown-item" (click)="changeReviewaompany(1)" >Yelp Reviews</a>
+                            </div>
+                        </div>
+                        <div class="dropdown" class="float-left" >
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {{this.orderSort}}
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" (click)="showReviews(0)" >Default Order</a>
+                                <a class="dropdown-item" (click)="showReviews(1)" >Highest Rating</a>
+                                <a class="dropdown-item" (click)="showReviews(2)" >Lowest Rating</a>
+                                <a class="dropdown-item" (click)="showReviews(3)" >Most Recent</a>
+                                <a class="dropdown-item" (click)="showReviews(4)" >Least Recent</a>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="alert alert-warning" role="alert" [hidden]="reviewsReady">
+                     No reviews records!
+                 </div>
+
+                 <div class="card" style="margin-bottom:20px" *ngFor="let review of this.reviews; index as i" [attr.data-index]="i">
+                     <div class="card-body">
+                        <div class="container">
+                          <div class="row justify-content-md-center">
+                            <div class="col-md-auto">
+                              <a  href='{{review.author_url}}' target='view_window'><img  src='{{review.profile_photo_url}}' style="width:64px;" ></a>
+                          </div>
+                          <div class="col ">
+                              <a  href='{{review.author_url}}' target='view_window'><div class="reviewWord">{{review.author_name}}</div></a>
+
+                              <div class="reviewWord">
+                                  <div class="stars-outer" >
+                                    <div class="stars-inner" [style.width.%]="review.rating*20" ></div>
+                                </div>
+                                {{review.time * 1000 | date: 'yyyy-MM-dd HH:mm:ss'}}
+                            </div>
+                            <div class="reviewWord">{{review.text}}</div>
+                        </div>
+                    </div>
+                </div> 
+            </div>
+        </div>
+
+
+    </div>
+</div>
+</div>
+</div>

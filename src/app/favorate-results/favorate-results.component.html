@@ -1,0 +1,34 @@
+
+<div class="container clearfix">
+<div class="float-right"> <button type="button" class="btn btn-outline-secondary" [disabled]="!this.searchService.detailAvailable" style="margin-right: 20px;margin-bottom: 20px"  (click)="goBackDetail()">detail<img src="https://useiconic.com/open-iconic/svg/chevron-right.svg" width="14"></button>
+</div>
+
+<div class="alert alert-warning" role="alert" [hidden]="!(this.searchService.localStorageSearchResult.length==0)">
+     No favorates records!
+ </div>
+ <div class="container table-responsive">
+<table class="table" [hidden]="this.searchService.localStorageSearchResult.length==0">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Category</th>
+      <th scope="col">Name</th>
+      <th scope="col">Address</th>
+      <th scope="col">Favorites</th>
+      <th scope="col">Details</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let result of this.searchService.localStorageSearchResult; index as i" [attr.data-index]="i" 
+    [class.bg-warning]="result.place_id==this.searchService.curDatilPlaceId">
+      <th scope="row">{{i+1}}</th>
+      <td><img src="{{result.icon}}" width='25'></td>
+      <td>{{result.name}}</td>
+      <td>{{result.vicinity}}</td>
+      <td><a class="nav-link active" (click)="deleteLocal(i)"><img src="https://useiconic.com/open-iconic/svg/trash.svg" style="width: 20px"></a></td>
+      <td><a class="nav-link active" (click)="getDetailsFromResult(i)"><img src="https://useiconic.com/open-iconic/svg/chevron-right.svg" width="14"></a></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>

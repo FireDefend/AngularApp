@@ -1,0 +1,43 @@
+<div class="container">
+<div [@.disabled]="this.searchService.searchResultsAnimationState">
+<div [@flyInOut]="'in'">
+    <div class='container clearfix' >
+<div class="float-right"> <button type="button" class="btn btn-outline-secondary" [disabled]="!this.searchService.detailAvailable" style="margin-right: 20px;margin-bottom: 20px"  (click)="goBackDetail()">detail<img src="https://useiconic.com/open-iconic/svg/chevron-right.svg" width="14"></button>
+</div >
+</div>
+<div class="alert alert-warning" role="alert" [hidden]="!(this.results.length==0)">
+     No search records!
+ </div>
+<div class="container table-responsive">
+<table class="table ">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Category</th>
+      <th scope="col">Name</th>
+      <th scope="col">Address</th>
+      <th scope="col">Favorites</th>
+      <th scope="col">Details</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let result of results; index as i" [attr.data-index]="i" [class.bg-warning]="result.place_id==this.searchService.curDatilPlaceId">
+      <th scope="row">{{i+1}}</th>
+      <td><img src="{{result.icon}}" width='25'></td>
+      <td>{{result.name}}</td>
+      <td>{{result.vicinity}}</td>
+      <td><a class="nav-link active" (click)="putInLocalOrDelete(i)"> 
+        <div  class="fa-star" [class.fas]="!ifInLocalStorage(i)" [class.far]="ifInLocalStorage(i)" > </div></a></td>
+      <td><a class="nav-link active" (click)="getDetailsFromResult(i)"><img src="https://useiconic.com/open-iconic/svg/chevron-right.svg" width="14"></a></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<div class="mx-auto" style="width:fit-content;width:-webkit-fit-content;width:-moz-fit-content;">
+    <button type="button" class="btn btn-outline-secondary" (click)="getPreviousPage()" [hidden]="!(this.index>0)">Previous</button>
+    <button type="button" class="btn btn-outline-secondary" (click)="getNextPage()"
+    [hidden]="(!(this.searchService.nextPage||this.index+1<this.searchService.searchResults.length))">Next</button>
+</div>
+</div>
+</div>
+</div>

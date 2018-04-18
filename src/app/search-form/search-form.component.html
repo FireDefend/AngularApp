@@ -1,0 +1,67 @@
+ <div class="container">
+ <div class="searchFormDiv">
+    <div class="title" style="font-family: sans-serif;font-size: 30px;width:fit-content;width:-webkit-fit-content;width:-moz-fit-content;margin-left: auto;margin-right: auto;">Travel and Entainment Search</div>
+    <hr style="border-color: #e9e9e9;">
+    <form id="searchform" (ngSubmit)="onSubmit()" #searchForm="ngForm">
+        <div class="form-group row">
+            <label for="inputText" class="col-sm-2 col-form-label">Keyword<span class="star">*</span></label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control " [class.is-invalid]="keyword.touched&&(model.keyword.trim().length<=0)" id="keyword" placeholder="keyword" [(ngModel)]="model.keyword" name="keyword" #keyword="ngModel" required>
+                <div class="invalid-feedback" >
+                    Please enter a keyword.
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="FormControlSelect" class="col-sm-2 col-form-label">Category</label>
+            <div class="col-sm-6">
+                <select name="category" class="form-control" id="FormControlSelect" [(ngModel)]="model.category">
+                    <option *ngFor="let option of categories" [value]="option">{{option}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="searchdistance" class="col-sm-2 col-form-label">Distance(miles)</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" id="searchdistance" name="distance" placeholder="10" 
+                 [(ngModel)]="model.distance"  #distance="ngModel">
+            </div>
+        </div>
+        <fieldset class="form-group">
+            <div class="row">
+                <legend class="col-form-label col-sm-2 pt-0">From</legend>
+                <div class="col-sm-10">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" [value]="1"  [(ngModel)]="options" checked>
+                        <label class="form-check-label" for="gridRadios1">
+                            Current location
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" [value]="2"  [(ngModel)]="options">
+                        <div class="">
+                            <label class="form-check-label" for="gridRadios2">
+                                Other. Please specify:
+                            </label>
+                            <div>
+                                <input #locationcasual type="text" class="form-control" [class.is-invalid]="(options==2)&&locationcasual1.touched&&(model.locationcasual.trim().length<=0)" name="locationcasual" id="locationcasual" [disabled]="(options!=2)" placeholder="location" required="required" [(ngModel)]="model.locationcasual"  #locationcasual1="ngModel" (click)="ooooooo( locationcasual.touched , model.locationcasual.trim() )">
+                                <div class="invalid-feedback">
+                                    Please enter a location.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </fieldset>
+        <div class="form-group row">
+            <div class="col-sm-10">
+                <button type="submit" class="btn btn-primary" [disabled]="!curLocation||model.keyword.trim().length<=0||(options==2)&&(model.locationcasual.trim().length<=0)">Search</button>
+                <button type="reset" class="btn btn-light" (click)="reset()">Clear</button>
+            </div>
+        </div>
+    </form>
+</div>
+</div>   
+

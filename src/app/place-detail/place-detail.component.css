@@ -1,0 +1,62 @@
+ul li div {
+    float:left;
+    text-align:left;
+    vertical-align:middle;
+}
+.reviewWord {
+    text-align:left;
+    vertical-align:middle;
+}
+.modal-no-line ul li div{
+    float:left;
+    text-align:left;
+    vertical-align:middle;
+}
+.stars-outer {
+  display: inline-block;
+  position: relative;
+  font-family: FontAwesome;
+}
+ 
+.stars-outer::before {
+  content: "\f005 \f005 \f005 \f005 \f005";
+  color: #ff;
+  opacity: 0;
+}
+ 
+.stars-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  white-space: nowrap;
+  overflow: hidden;
+}
+ 
+.stars-inner::before {
+  content: "\f005 \f005 \f005 \f005 \f005";
+  color: #f8ce0b;
+}
+.fas {
+    content:"\f006";
+    font-family: FontAwesome;
+}
+.far {
+    content:"\f005";
+    font-family: FontAwesome;
+      
+      color: #f8ce0b;
+}
+agm-map {
+  height: 400px;
+}
+
+.card-columns {
+    column-count: 1;
+
+}
+
+@media (min-width: 576px) { 
+   .card-columns {
+    column-count: 4;
+   }
+}
